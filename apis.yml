@@ -4,8 +4,7 @@ url: >-
 apis:
   - aid: asce-amplify:asce-amplify
     name: ASCE Amplify
-    tags:
-      - API
+    tags: []
     humanURL: ' https://amplify.asce.org/api?implicit-login=true'
     properties:
       - url: ' https://amplify.asce.org/api?implicit-login=true'
