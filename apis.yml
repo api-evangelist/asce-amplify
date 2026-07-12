@@ -46,6 +46,8 @@ apis:
       - type: Authentication
         url: https://amplify.asce.org/api
 common:
+  - type: DomainSecurity
+    url: security/asce-amplify-domain-security.yml
   - type: Portal
     url: https://amplify.asce.org/
     title: ASCE Amplify Platform
