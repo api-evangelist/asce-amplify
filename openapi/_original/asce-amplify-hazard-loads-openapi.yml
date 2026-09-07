@@ -1,0 +1,352 @@
+openapi: 3.0.3
+info:
+  title: ASCE Hazard Loads API documentation
+  description: This is the API documentation for the ASCE Hazard Loads API.
+  version: 1.0.0
+servers:
+  - url: https://api-hazard.asce.org/v1
+  - url: http://localhost:3000/v1
+paths:
+  /flood:
+    get:
+      tags:
+        - Flood
+      summary: Get flood information
+      parameters:
+        - name: lat
+          in: query
+          description: Latitude of the location
+          required: true
+          explode: true
+          schema:
+            type: number
+            default: 34.921206
+        - name: lon
+          in: query
+          description: Longitude of the location
+          required: true
+          schema:
+            type: number
+            default: -118.418998
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input
+  /ice:
+    get:
+      tags:
+        - Ice
+      summary: Get ice information
+      parameters:
+        - name: lat
+          in: query
+          description: Latitude of the location
+          required: true
+          explode: true
+          schema:
+            type: number
+            default: 34.921206
+        - name: lon
+          in: query
+          description: Longitude of the location
+          required: true
+          schema:
+            type: number
+            default: -118.418998
+        - name: standardsVersion
+          in: query
+          description: Standards version
+          required: true
+          schema:
+            type: string
+            enum:
+              - 7-10
+              - 7-16
+              - 7-22
+        - name: riskLevel
+          in: query
+          description: Risk level
+          required: false
+          schema:
+            type: number
+            enum:
+              - 1
+              - 2
+              - 3
+              - 4
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input
+  /rain:
+    get:
+      tags:
+        - 'Rain'
+      summary: Get rain information
+      parameters:
+        - name: lat
+          in: query
+          description: Latitude of the location
+          required: true
+          schema:
+            type: number
+            default: 34.921206
+        - name: lon
+          in: query
+          description: Longitude of the location
+          required: true
+          schema:
+            type: number
+            default: -118.418998
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input
+  /seismic:
+    get:
+      tags:
+        - 'Seismic'
+      summary: Get seismic information
+      parameters:
+        - name: lat
+          in: query
+          description: Latitude of the location
+          required: true
+          schema:
+            type: number
+            default: 34.921206
+        - name: lon
+          in: query
+          description: Longitude of the location
+          required: true
+          schema:
+            type: number
+            default: -118.418998
+        - name: standardsVersion
+          in: query
+          description: Standards version
+          required: true
+          schema:
+            type: string
+            enum:
+              - 7-10
+              - 7-16
+              - 7-22
+              - 41-17
+              - 41-23
+        - name: riskLevel
+          in: query
+          description: Risk level
+          required: false
+          schema:
+            type: number
+            enum:
+              - 1
+              - 2
+              - 3
+              - 4
+        - name: siteClass
+          in: query
+          description: Site class
+          required: true
+          schema:
+            type: string
+            enum:
+              - A
+              - B
+              - C
+              - D
+              - E
+              - B-estimated
+              - D-default
+              - BC
+              - CD
+              - DE
+              - Default
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input
+  /snow:
+    get:
+      tags:
+        - 'Snow'
+      summary: Get snow information
+      parameters:
+        - name: lat
+          in: query
+          description: Latitude of the location
+          required: true
+          schema:
+            type: number
+            default: 34.921206
+        - name: lon
+          in: query
+          description: Longitude of the location
+          required: true
+          schema:
+            type: number
+            default: -118.418998
+        - name: standardsVersion
+          in: query
+          description: Standards version
+          required: true
+          schema:
+            type: string
+            enum:
+              - 7-10
+              - 7-16
+              - 7-22
+        - name: riskLevel
+          in: query
+          description: Risk level
+          required: true
+          schema:
+            type: number
+            enum:
+              - 1
+              - 2
+              - 3
+              - 4
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input
+  /tornado:
+    get:
+      tags:
+        - 'Tornado'
+      summary: Get tornado information
+      parameters:
+        - name: lat
+          in: query
+          description: Latitude of the location
+          required: true
+          schema:
+            type: number
+            default: 34.921206
+        - name: lon
+          in: query
+          description: Longitude of the location
+          required: true
+          schema:
+            type: number
+            default: -118.418998
+        - name: standardsVersion
+          in: query
+          description: Standards version
+          required: true
+          schema:
+            type: string
+            enum:
+              - '7-22'
+        - name: riskLevel
+          in: query
+          description: Risk level
+          required: true
+          schema:
+            type: number
+            enum:
+              - 1
+              - 2
+              - 3
+              - 4
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input
+  /tsunami:
+    get:
+      tags:
+        - 'Tsunami'
+      summary: Get tsunami information
+      parameters:
+        - name: lat
+          in: query
+          description: Latitude of the location
+          required: true
+          schema:
+            type: number
+            default: 34.921206
+        - name: lon
+          in: query
+          description: Longitude of the location
+          required: true
+          schema:
+            type: number
+            default: -118.418998
+        - name: standardsVersion
+          in: query
+          description: Standards version
+          required: true
+          schema:
+            type: string
+            enum:
+              - 7-10
+              - 7-16
+              - 7-22
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input
+  /wind:
+    get:
+      tags:
+        - 'Wind'
+      summary: Get wind information
+      parameters:
+        - name: lat
+          in: query
+          description: Latitude of the location
+          required: true
+          schema:
+            type: number
+            default: 34.921206
+        - name: lon
+          in: query
+          description: Longitude of the location
+          required: true
+          schema:
+            type: number
+            default: -118.418998
+        - name: standardsVersion
+          in: query
+          description: Standards version
+          required: true
+          schema:
+            type: string
+            enum:
+              - 7-10
+              - 7-16
+              - 7-22
+        - name: riskLevel
+          in: query
+          description: Risk level
+          required: true
+          schema:
+            type: number
+            enum:
+              - 1
+              - 2
+              - 3
+              - 4
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      name: token
+      in: query
+security:
+  - ApiKeyAuth: []

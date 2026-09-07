@@ -1,0 +1,129 @@
+specification: Model Context Protocol
+provider: ASCE Amplify
+providerId: asce-amplify
+generated: '2026-09-07'
+method: derived
+source: openapi/asce-amplify-hazard-loads-openapi.yml
+status: candidate
+searched:
+  - query: ASCE Hazard Tool API MCP server
+    result: >-
+      No hosted or local MCP server is published by ASCE. Nothing in the ASCE
+      Hazard Tool API documentation, the Swagger UI at api-hazard.asce.org/docs,
+      or any registry names an ASCE MCP endpoint or package.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: api-key
+  verified: derived
+  note: >-
+    Nobody ships an MCP server for this API. The tool list below is a candidate
+    derived from the eight operations in the harvested OpenAPI so an agent
+    builder can see the shape; it is not a surface ASCE operates. `auth` records
+    what a real server would need — the `token` query-parameter API key.
+server:
+  name: asce-hazard-loads
+  description: >-
+    Candidate MCP tool surface over the ASCE Hazard Loads API: site-specific
+    ASCE 7 / ASCE 41 environmental design hazard lookups by latitude and
+    longitude for the United States and territories.
+  transport: null
+tools:
+  - name: get_flood
+    description: Get FEMA National Flood Hazard Layer flood zone, static BFE and vertical datum for a site.
+    rest: GET /flood
+    inputSchema:
+      type: object
+      required: [lat, lon]
+      properties:
+        lat: {type: number, description: Latitude of the location}
+        lon: {type: number, description: Longitude of the location}
+  - name: get_ice
+    description: Get ASCE 7 equivalent radial ice thickness, concurrent temperature and gust speed for a site.
+    rest: GET /ice
+    inputSchema:
+      type: object
+      required: [lat, lon, standardsVersion]
+      properties:
+        lat: {type: number}
+        lon: {type: number}
+        standardsVersion: {type: string, enum: ['7-10', '7-16', '7-22']}
+        riskLevel: {type: number, enum: [1, 2, 3, 4]}
+  - name: get_rain
+    description: Get NOAA Atlas 14 precipitation frequency estimates for a site.
+    rest: GET /rain
+    inputSchema:
+      type: object
+      required: [lat, lon]
+      properties:
+        lat: {type: number}
+        lon: {type: number}
+  - name: get_seismic
+    description: Get USGS seismic design parameters for a site under the selected ASCE 7 or ASCE 41 standard.
+    rest: GET /seismic
+    inputSchema:
+      type: object
+      required: [lat, lon, standardsVersion, siteClass]
+      properties:
+        lat: {type: number}
+        lon: {type: number}
+        standardsVersion: {type: string, enum: ['7-10', '7-16', '7-22', '41-17', '41-23']}
+        riskLevel: {type: number, enum: [1, 2, 3, 4]}
+        siteClass:
+          type: string
+          enum: [A, B, C, D, E, B-estimated, D-default, BC, CD, DE, Default]
+  - name: get_snow
+    description: Get ASCE 7 ground snow load for a site, including elevation bands and case-study flags.
+    rest: GET /snow
+    inputSchema:
+      type: object
+      required: [lat, lon, standardsVersion, riskLevel]
+      properties:
+        lat: {type: number}
+        lon: {type: number}
+        standardsVersion: {type: string, enum: ['7-10', '7-16', '7-22']}
+        riskLevel: {type: number, enum: [1, 2, 3, 4]}
+  - name: get_tornado
+    description: Get ASCE 7-22 tornado wind speeds by effective plan area and MRI (Risk Category III/IV only).
+    rest: GET /tornado
+    inputSchema:
+      type: object
+      required: [lat, lon, standardsVersion, riskLevel]
+      properties:
+        lat: {type: number}
+        lon: {type: number}
+        standardsVersion: {type: string, enum: ['7-22']}
+        riskLevel: {type: number, enum: [1, 2, 3, 4]}
+  - name: get_tsunami
+    description: Determine whether a site falls inside the mapped ASCE tsunami design zone.
+    rest: GET /tsunami
+    inputSchema:
+      type: object
+      required: [lat, lon, standardsVersion]
+      properties:
+        lat: {type: number}
+        lon: {type: number}
+        standardsVersion: {type: string, enum: ['7-10', '7-16', '7-22']}
+  - name: get_wind
+    description: Get ASCE 7 3-second gust design wind speeds and hurricane/special wind region flags for a site.
+    rest: GET /wind
+    inputSchema:
+      type: object
+      required: [lat, lon, standardsVersion, riskLevel]
+      properties:
+        lat: {type: number}
+        lon: {type: number}
+        standardsVersion: {type: string, enum: ['7-10', '7-16', '7-22']}
+        riskLevel: {type: number, enum: [1, 2, 3, 4]}
+notes:
+  - >-
+    Every operation is a read. There is no mutating surface, so an MCP server
+    over this API would need no write-consequence classification.
+  - >-
+    Input schemas are taken verbatim from the provider's own OpenAPI parameter
+    definitions; nothing here was invented.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

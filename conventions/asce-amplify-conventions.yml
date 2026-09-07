@@ -1,0 +1,145 @@
+generated: '2026-09-07'
+method: searched
+source: >-
+  https://www.asce.org/publications-and-news/asce-hazard-tool/api,
+  Hazard Tool API JSON field documentation (PDF),
+  openapi/asce-amplify-hazard-loads-openapi.yml,
+  live probe of https://api-hazard.asce.org/v1/wind (2026-09-07)
+provider: ASCE Amplify
+providerId: asce-amplify
+surface:
+  operations: 8
+  methods: [GET]
+  write_operations: 0
+  read_only: true
+  note: >-
+    The ASCE Hazard Loads API is entirely read-only: eight GET point-lookup
+    operations keyed on latitude and longitude. That single fact determines the
+    idempotency, reversibility and dry-run answers below.
+auth:
+  style: api-key
+  transport: query parameter
+  parameter: token
+  detail: See authentication/asce-amplify-authentication.yml.
+  caution: >-
+    The key travels in the query string, so it lands in browser history, proxy
+    logs and server access logs. There is no header alternative in the contract.
+idempotency:
+  coverage: na
+  mechanism: none
+  header: null
+  scope: []
+  retention: null
+  rationale: >-
+    There is no mutating surface. Every operation is a GET and is idempotent by
+    HTTP semantics; there is nothing to replay-protect. `na` rather than `none`
+    because the absence is structural, not a gap ASCE should close.
+  note: >-
+    No `Idempotency` pointer is emitted in apis.yml — asserting one over a
+    read-only API would credit a mechanism that cannot exist here.
+reversibility:
+  grade: na
+  reversal_operations: []
+  windows: []
+  rationale: >-
+    Read-only API. No operation an agent can call changes provider-side state, so
+    there is nothing to cancel, refund, void or restore. Recorded as `na` rather
+    than a zero.
+dry_run_mode:
+  supported: na
+  rationale: >-
+    Read-only API — every call is already a safe rehearsal. The Swagger UI at
+    https://api-hazard.asce.org/docs is the provider's own place to construct and
+    test calls, but it executes against production with a real key.
+pagination:
+  style: none
+  rationale: >-
+    No collection endpoints. Each operation returns the hazard values for one
+    coordinate; there is no page, cursor, limit or offset parameter in the spec.
+filtering_and_selection:
+  parameters:
+    - name: lat
+      required: true
+      applies_to: [all 8 operations]
+      description: Latitude of the location (number).
+    - name: lon
+      required: true
+      applies_to: [all 8 operations]
+      description: Longitude of the location (number).
+    - name: standardsVersion
+      required: true
+      applies_to: [ice, seismic, snow, tornado, tsunami, wind]
+      description: >-
+        ASCE standard edition. 7-10, 7-16, 7-22 for most hazards; /seismic adds
+        41-17 and 41-23; /tornado accepts only 7-22.
+    - name: riskLevel
+      required: varies
+      applies_to: [ice (optional), seismic (optional), snow, tornado, wind]
+      description: ASCE 7 Risk Category, 1-4.
+    - name: siteClass
+      required: true
+      applies_to: [seismic]
+      description: >-
+        Site soil classification. Valid values differ by standard edition; an
+        out-of-edition value returns an invalid input error.
+  note: >-
+    /flood and /rain take only lat and lon — their data sources (FEMA NFHL and
+    NOAA Atlas 14) are not edition-scoped.
+request_tracing:
+  request_id_header: null
+  echo: >-
+    Successful responses carry a requestInfo object echoing the full request url
+    (including the token), a start and end timestamp, a human-readable duration,
+    and currentMonthlyRequestNumber as "<used>/<allowance>".
+  caution: >-
+    requestInfo.url echoes the API key back in the response body. Anything that
+    logs or forwards a raw response is logging the credential.
+  source: https://www.asce.org/publications-and-news/asce-hazard-tool/api
+versioning:
+  style: path
+  current: v1
+  detail: See lifecycle/asce-amplify-lifecycle.yml.
+error_envelope:
+  shape: '{"code": <integer>, "message": "<string>"}'
+  media_type: application/json
+  rfc9457: false
+  detail: See errors/asce-amplify-problem-types.yml.
+rate_limit_signaling:
+  response_headers: []
+  in_body: requestInfo.currentMonthlyRequestNumber
+  exhaustion_status: 500
+  detail: See rate-limits/asce-amplify-rate-limits.yml.
+  note: >-
+    There are no X-RateLimit-* or RateLimit-* response headers. The only runtime
+    quota signal is a string inside the success body, which means an agent cannot
+    learn its remaining allowance without parsing a successful response.
+response_conventions:
+  format: JSON
+  units: >-
+    Values are returned in both customary and SI where the standard provides
+    both, generally as sibling fields (e.g. ice.attributes.ice_load in inches
+    alongside ice.attributes.load_mms in millimetres).
+  sentinels:
+    - field: flood.features.attributes.STATIC_BFE
+      value: -9999
+      meaning: Base flood elevation not applicable.
+    - field: snow.snowResults.attributes.Notes
+      value: Case Study
+      meaning: >-
+        A site-specific case study is required; the accompanying load value is 0
+        and must be read as N/A, never as a zero load.
+    - field: tornado.isRiskLevelApplicable
+      meaning: Risk Category I or II — no tornado data is returned.
+  shape_note: >-
+    Response shape varies by standard edition for the same hazard (7-10/7-16 snow
+    returns snowResults.features.attributes.*; 7-22 returns
+    snowResults.riskCategoryXX). A client must branch on standardsVersion.
+cross_links:
+  authentication: authentication/asce-amplify-authentication.yml
+  errors: errors/asce-amplify-problem-types.yml
+  lifecycle: lifecycle/asce-amplify-lifecycle.yml
+  rate_limits: rate-limits/asce-amplify-rate-limits.yml
+  data_model: data-model/asce-amplify-data-model.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

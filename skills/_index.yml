@@ -1,0 +1,35 @@
+generated: '2026-09-07'
+method: generated
+source: >-
+  openapi/asce-amplify-hazard-loads-openapi.yml plus the ASCE Hazard Tool API
+  documentation page and JSON field documentation PDF
+provider: ASCE Amplify
+providerId: asce-amplify
+searched:
+  result: >-
+    ASCE publishes no Agent Skills, AGENTS.md or agent-facing operating
+    instructions. These two skills are generated from the provider's own contract
+    and field documentation.
+skills:
+  - name: asce-site-hazard-lookup
+    file: asce-amplify-site-hazard-lookup.md
+    description: >-
+      Retrieve the full ASCE 7 hazard set for a building site and read the
+      results without mistaking a sentinel value for data.
+    api: ASCE Hazard Tool API
+    operations: [GET /wind, GET /snow, GET /ice, GET /rain, GET /flood, GET /tornado, GET /tsunami]
+  - name: asce-seismic-design-parameters
+    file: asce-amplify-seismic-design-parameters.md
+    description: >-
+      Retrieve seismic design parameters under ASCE 7 or ASCE 41, choosing a site
+      soil class valid for the requested standard edition.
+    api: ASCE Hazard Tool API
+    operations: [GET /seismic]
+notes:
+  - >-
+    The published OpenAPI declares no operationIds. Skills reference operations by
+    method and path, and name the operationIds assigned in
+    overlays/asce-amplify-hazard-loads-overlay.yaml as ours rather than ASCE's.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

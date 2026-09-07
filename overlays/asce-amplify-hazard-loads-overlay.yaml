@@ -1,0 +1,122 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the ASCE Hazard Loads API
+  version: 1.0.0
+x-provenance:
+  generated: '2026-09-07'
+  method: generated
+  source: openapi/asce-amplify-hazard-loads-openapi.yml
+  extends: openapi/asce-amplify-hazard-loads-openapi.yml
+  note: >-
+    The OpenAPI ASCE publishes carries no operationIds, no info.contact, no
+    info.license, no tag descriptions and no response content schemas. This
+    overlay records the additions API Evangelist would apply so agents and
+    generators have stable handles; it never mutates the harvested original.
+    Every value here is traceable to a provider-published source — the API
+    documentation page, the JSON field documentation PDF, or a recorded probe.
+actions:
+  - target: $.info
+    description: Add contact, license and a fuller description from the provider's own documentation page.
+    update:
+      description: >-
+        The ASCE Hazard Tool API provides a simple interface to query locations
+        in the United States for environmental hazard data by geographic
+        location. It returns ASCE 7-22, 7-16 and 7-10 wind, ice, rain, flood,
+        seismic, snow, tornado and tsunami data, plus ASCE 41-17 and 41-23
+        seismic data, for the contiguous United States, Alaska, Hawaii, Puerto
+        Rico, Guam, American Samoa and the U.S. Virgin Islands. All requests
+        authenticate with an API key passed as the `token` query parameter.
+      contact:
+        name: ASCE AMPLIFY support
+        email: amplify@asce.org
+        url: https://www.asce.org/publications-and-news/asce-hazard-tool/api
+      termsOfService: https://www.asce.org/publications-and-news/asce-hazard-tool/terms
+  - target: $.servers
+    description: Drop the non-routable development server from the consumable copy.
+    remove: false
+    update:
+      - url: https://api-hazard.asce.org/v1
+        description: Production. The second entry in the published spec, http://localhost:3000/v1, is a development host and is not callable by consumers.
+  - target: $.paths['/flood'].get
+    update:
+      operationId: getFlood
+      description: >-
+        Returns the FEMA National Flood Hazard Layer flood zone classification,
+        static base flood elevation (-9999 when not applicable) and vertical
+        datum for the coordinate.
+  - target: $.paths['/ice'].get
+    update:
+      operationId: getIce
+      description: >-
+        Returns ASCE 7 equivalent radial ice thickness due to freezing rain,
+        concurrent temperature and concurrent 3-second gust speed. Response shape
+        differs between the 7-10/7-16 editions and 7-22.
+  - target: $.paths['/rain'].get
+    update:
+      operationId: getRain
+      description: >-
+        Returns the NOAA Atlas 14 precipitation frequency table for the
+        coordinate: 19 duration rows by 9 average recurrence intervals, in
+        inches/hour.
+  - target: $.paths['/seismic'].get
+    update:
+      operationId: getSeismic
+      description: >-
+        Returns USGS Seismic Design Web Services values for the coordinate under
+        the selected ASCE 7 or ASCE 41 edition. Valid siteClass values differ by
+        edition; an out-of-edition value returns an invalid input error.
+  - target: $.paths['/snow'].get
+    update:
+      operationId: getSnow
+      description: >-
+        Returns ASCE 7 ground snow load. A value of "Case Study" (or an Alaska
+        Notes field reading "Case Study" with a load of 0) means a site-specific
+        study is required and the number must not be read as a load.
+  - target: $.paths['/tornado'].get
+    update:
+      operationId: getTornado
+      description: >-
+        Returns ASCE 7-22 tornado wind speeds by effective plan area and mean
+        recurrence interval. Tornado hazard data applies only to Risk Category
+        III and IV; for I and II the response carries isRiskLevelApplicable and
+        no values.
+  - target: $.paths['/tsunami'].get
+    update:
+      operationId: getTsunami
+      description: >-
+        Reports whether the coordinate falls inside the mapped tsunami design
+        zone. Returns GIS data about the TDZ shape when inside it, and an empty
+        features object when outside it or when standardsVersion is 7-10.
+  - target: $.paths['/wind'].get
+    update:
+      operationId: getWind
+      description: >-
+        Returns ASCE 7 3-second gust design wind speeds at 33 ft above ground for
+        Exposure C across multiple mean recurrence intervals, plus
+        hurricane-prone and special wind region flags. Wind always returns speeds
+        for all Risk Categories, but a riskLevel must still be supplied.
+  - target: $.paths.*.get.responses['401']
+    description: Record the observed 401 envelope, which the published spec omits.
+    update:
+      description: >-
+        Token required. Observed 2026-09-07 on an anonymous call to
+        https://api-hazard.asce.org/v1/wind — {"code":401,"message":"Token required"}.
+        Note the documentation page describes a missing or invalid key as code 500.
+  - target: $.components.securitySchemes.ApiKeyAuth
+    update:
+      description: >-
+        API key issued per company through the ASCE Hazard Tool Account Manager
+        and passed as the `token` query parameter. Because the credential travels
+        in the query string it is echoed back in requestInfo.url on every
+        successful response and will appear in logs.
+  - target: $.tags
+    description: Declare the eight hazard tags the operations already use.
+    update:
+      - {name: Flood, description: FEMA National Flood Hazard Layer lookups.}
+      - {name: Ice, description: ASCE 7 atmospheric ice load lookups.}
+      - {name: Rain, description: NOAA Atlas 14 precipitation frequency lookups.}
+      - {name: Seismic, description: USGS seismic design parameter lookups under ASCE 7 and ASCE 41.}
+      - {name: Snow, description: ASCE 7 ground snow load lookups.}
+      - {name: Tornado, description: ASCE 7-22 tornado wind speed lookups.}
+      - {name: Tsunami, description: ASCE tsunami design zone lookups.}
+      - {name: Wind, description: ASCE 7 design wind speed lookups.}

@@ -1,0 +1,64 @@
+generated: '2026-09-07'
+method: searched
+source: https://www.asce.org/publications-and-news/asce-hazard-tool/api
+docs: https://www.asce.org/publications-and-news/asce-hazard-tool/api
+spec_source: openapi/asce-amplify-hazard-loads-openapi.yml
+provider: ASCE Amplify
+providerId: asce-amplify
+summary:
+  types:
+    - apiKey
+  api_key_in:
+    - query
+  oauth2: false
+  openid_connect: false
+  mutual_tls: false
+schemes:
+  - name: ApiKeyAuth
+    type: apiKey
+    in: query
+    parameter: token
+    description: >-
+      Every ASCE Hazard Loads API request authenticates with an API key passed as
+      the `token` query parameter. Keys are issued per company at sign-up and are
+      managed through the ASCE Hazard Tool Account Manager. ASCE publishes a
+      sample key format on the documentation page (a UUID v4 string); it is a
+      format illustration, not a working credential.
+    key_format: UUID v4 (as illustrated in the ASCE documentation)
+    issuance: >-
+      Issued to the company at the time of sign-up via the ASCE Hazard Tool
+      Account Manager. Higher usage limits are arranged through the quote form.
+    rotation: not documented
+    applies_to:
+      - ASCE Hazard Tool API
+    sources:
+      - openapi/asce-amplify-hazard-loads-openapi.yml
+      - https://www.asce.org/publications-and-news/asce-hazard-tool/api
+observed:
+  - probe: GET https://api-hazard.asce.org/v1/wind
+    http_status: 401
+    body: '{"code":401,"message":"Token required"}'
+    fetched: '2026-09-07'
+    note: >-
+      Anonymous call to a live operation. The documentation page states code 500
+      for a missing or invalid key; the deployed API answers 401 with a JSON
+      envelope of {code, message}. Recorded as observed behavior, not a
+      contradiction we are asserting on ASCE's behalf.
+notes:
+  - >-
+    The ASCE Hazard Loads API declares no OAuth2 or OpenID Connect scheme, so no
+    scopes/ artifact is applicable.
+  - >-
+    The separate ASCE GIS REST surface at gis.asce.org answers anonymously for the
+    published hazard services; /arcgis/rest/info reports
+    isTokenBasedSecurity: true with a token service at
+    https://gis.asce.org/arcgis/tokens/ for the secured/administrative surface.
+  - >-
+    The ASCE AMPLIFY web application (amplify.asce.org) authenticates humans over
+    OpenID Connect against the SAMS Sigma identity provider
+    (https://idp.sams-sigma.com, issuer confirmed in its published
+    /.well-known/openid-configuration). That is the application SSO, not an API
+    authentication path.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

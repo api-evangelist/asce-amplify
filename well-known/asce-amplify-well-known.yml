@@ -1,0 +1,78 @@
+generated: '2026-09-07'
+method: probed
+source: live GET of the named /.well-known/ paths on every host this record knows
+provider: ASCE Amplify
+providerId: asce-amplify
+summary:
+  hosts_probed: 5
+  documents_found: 0
+  note: >-
+    No /.well-known/ document is served on any ASCE host. Every path returned 404
+    (the www.asce.org / asce.org 404s render the site's HTML error page, which is
+    a 404 status, not a document). No WellKnown or SecurityTxt pointer is emitted
+    for this provider — this file records a measured absence, not a surface.
+hosts:
+  - host: www.asce.org
+    documents:
+      - {path: /.well-known/security.txt, status: 404, file: null}
+      - {path: /.well-known/openid-configuration, status: 404, file: null}
+      - {path: /.well-known/oauth-authorization-server, status: 404, file: null}
+      - {path: /.well-known/oauth-protected-resource, status: 404, file: null}
+      - {path: /.well-known/api-catalog, status: 404, file: null}
+      - {path: /.well-known/ai-plugin.json, status: 404, file: null}
+      - {path: /.well-known/agent-card.json, status: 404, file: null}
+      - {path: /.well-known/agent.json, status: 404, file: null}
+  - host: asce.org
+    documents:
+      - {path: /.well-known/security.txt, status: 404, file: null}
+      - {path: /.well-known/openid-configuration, status: 404, file: null}
+      - {path: /.well-known/oauth-authorization-server, status: 404, file: null}
+      - {path: /.well-known/oauth-protected-resource, status: 404, file: null}
+      - {path: /.well-known/api-catalog, status: 404, file: null}
+      - {path: /.well-known/ai-plugin.json, status: 404, file: null}
+      - {path: /.well-known/agent-card.json, status: 404, file: null}
+      - {path: /.well-known/agent.json, status: 404, file: null}
+  - host: api-hazard.asce.org
+    documents:
+      - {path: /.well-known/security.txt, status: 404, file: null}
+      - {path: /.well-known/openid-configuration, status: 404, file: null}
+      - {path: /.well-known/oauth-authorization-server, status: 404, file: null}
+      - {path: /.well-known/oauth-protected-resource, status: 404, file: null}
+      - {path: /.well-known/api-catalog, status: 404, file: null}
+      - {path: /.well-known/ai-plugin.json, status: 404, file: null}
+      - {path: /.well-known/agent-card.json, status: 404, file: null}
+      - {path: /.well-known/agent.json, status: 404, file: null}
+  - host: amplify.asce.org
+    documents:
+      - {path: /.well-known/security.txt, status: 404, file: null}
+      - {path: /.well-known/openid-configuration, status: 404, file: null}
+      - {path: /.well-known/oauth-authorization-server, status: 404, file: null}
+      - {path: /.well-known/oauth-protected-resource, status: 404, file: null}
+      - {path: /.well-known/api-catalog, status: 404, file: null}
+      - {path: /.well-known/ai-plugin.json, status: 404, file: null}
+      - {path: /.well-known/agent-card.json, status: 404, file: null}
+      - {path: /.well-known/agent.json, status: 404, file: null}
+  - host: gis.asce.org
+    documents:
+      - {path: /.well-known/security.txt, status: 404, file: null}
+      - {path: /.well-known/openid-configuration, status: 404, file: null}
+      - {path: /.well-known/oauth-authorization-server, status: 404, file: null}
+      - {path: /.well-known/oauth-protected-resource, status: 404, file: null}
+      - {path: /.well-known/api-catalog, status: 404, file: null}
+      - {path: /.well-known/ai-plugin.json, status: 404, file: null}
+      - {path: /.well-known/agent-card.json, status: 404, file: null}
+      - {path: /.well-known/agent.json, status: 404, file: null}
+related:
+  - host: idp.sams-sigma.com
+    note: >-
+      Third-party identity provider (SAMS Sigma) behind the AMPLIFY web
+      application SSO, not an ASCE-controlled host. Probed for completeness:
+      GET https://idp.sams-sigma.com/.well-known/openid-configuration returned
+      200 with issuer https://idp.sams-sigma.com and scopes_supported
+      [license, license_lite, openid, offline_access, profile, admin, email].
+      Not credited to ASCE and no file saved, because ASCE does not serve it.
+    documents:
+      - {path: /.well-known/openid-configuration, status: 200, file: null}
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

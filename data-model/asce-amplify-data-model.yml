@@ -1,0 +1,153 @@
+generated: '2026-09-07'
+method: searched
+source: >-
+  Hazard Tool API JSON field documentation (PDF,
+  https://www.asce.org/-/media/asce-images-and-files/publications-and-news/hazard-tool/hazard-tool-api-documentation.pdf)
+  plus openapi/asce-amplify-hazard-loads-openapi.yml and the sample response on
+  https://www.asce.org/publications-and-news/asce-hazard-tool/api
+provider: ASCE Amplify
+providerId: asce-amplify
+note: >-
+  The OpenAPI ASCE publishes declares no components.schemas — every operation
+  documents only "200 Successful operation". The response model below is read
+  from the provider's own JSON field documentation PDF, which names each field
+  path explicitly. Nothing here is inferred from an example alone.
+root_entity: HazardResponse
+entities:
+  - name: HazardResponse
+    description: Envelope returned by every hazard operation.
+    fields:
+      - {name: requestInfo, type: object, description: Request metadata envelope.}
+      - {name: '<hazard>', type: object, description: 'One key named for the hazard requested: flood, ice, rain, seismic, snow, tornado, tsunami or wind.'}
+  - name: RequestInfo
+    description: Per-request metadata echoed on successful responses.
+    fields:
+      - {name: url, type: string, description: 'The full request URL, including the token query parameter.'}
+      - {name: start, type: string, description: Request start timestamp.}
+      - {name: end, type: string, description: Request end timestamp.}
+      - {name: duration, type: string, description: Human-readable elapsed time.}
+      - {name: currentMonthlyRequestNumber, type: string, description: 'Requests used over monthly allowance, e.g. "69/1000".'}
+  - name: Flood
+    key_parameters: [lat, lon]
+    data_source: FEMA National Flood Hazard Layer
+    fields:
+      - {name: features.attributes.FLD_ZONE, description: Flood zone classification per local flood hazard maps.}
+      - {name: features.attributes.STATIC_BFE, description: 'Base flood elevation where applicable; -9999 when not applicable.'}
+      - {name: features.attributes.V_DATUM, description: 'Vertical datum used for the BFE (e.g. NAVD 88); empty string when not applicable.'}
+  - name: Ice
+    key_parameters: [lat, lon, standardsVersion, riskLevel]
+    data_source: ASCE/SEI 7 Figs. 10-2 through 10-8
+    editions:
+      '7-10/7-16':
+        fields:
+          - {name: attributes.ice_load, description: Equivalent radial ice thickness for a 500-year MRI, inches.}
+          - {name: attributes.load_mms, description: Same value in millimetres.}
+          - {name: attributes.conc_temp, description: Concurrent temperature, degrees Fahrenheit.}
+          - {name: attributes.temp_C, description: Concurrent temperature, degrees Celsius.}
+          - {name: attributes.gust_speed, description: Concurrent 3-second gust speed, mph.}
+          - {name: attributes.gust_ms, description: Concurrent 3-second gust speed, m/s.}
+          - {name: attributes.spec_zone, description: Indicates a special icing region.}
+      '7-22':
+        fields:
+          - {name: riskCategoryXX, description: 'Equivalent radial ice thickness for 250/500/1,000/1,400-year MRI, XX = Risk Category I-IV.'}
+          - {name: temp.attributes.conc_temp, description: Concurrent air temperature, Fahrenheit.}
+          - {name: temp.attributes.conc_temp_SI, description: Concurrent air temperature, Celsius.}
+          - {name: gust, description: Concurrent 3-second gust speed, mph.}
+          - {name: specialZones, description: 'Special icing region indicator; null when the site is not in one.'}
+  - name: Rain
+    key_parameters: [lat, lon]
+    data_source: NOAA National Weather Service Precipitation Frequency Data Server, Atlas 14
+    fields:
+      - name: groups
+        description: >-
+          Precipitation frequency table as comma-separated values. 19 duration
+          rows (5-min through 60-day) x 9 average recurrence intervals
+          (2 to 1,000 years); each value is the median of a 90% confidence
+          interval, in inches/hour.
+  - name: Seismic
+    key_parameters: [lat, lon, standardsVersion, riskLevel, siteClass]
+    data_source: USGS Seismic Design Web Services (https://earthquake.usgs.gov/ws/designmaps/)
+    fields:
+      - name: (per USGS)
+        description: >-
+          Output values are taken verbatim from the USGS Seismic Design Web
+          Services; ASCE documents the USGS service as the field reference rather
+          than restating it.
+    site_class_by_edition:
+      '7-10 / 41-17': [A, B, C, D, E, F]
+      '7-16': [A, B, 'B-estimated', C, D, 'D-default', E, F]
+      '7-22 / 41-23': [Default, A, B, BC, C, CD, D, DE, E, F]
+  - name: Snow
+    key_parameters: [lat, lon, standardsVersion, riskLevel]
+    data_source: ASCE/SEI 7-10 Fig. 7-1; 7-16 Fig. 7.2-1 and Tables 7.2-1 to 7.2-8; 7-22 Figs. 7.6-1, 7.6-2 A-D
+    editions:
+      '7-10/7-16':
+        fields:
+          - {name: snowResults.features.attributes.Display_1, description: 'Ground snow load, lb/ft2; "Case Study" when a site-specific study is required.'}
+          - {name: snowResults.features.attributes.DisplaySI, description: 'Ground snow load, kN/m2.'}
+          - {name: snowResults.features.attributes.ElevationXX_1, description: 'Upper elevation (ft) for the corresponding load band, XX = 1-4.'}
+          - {name: snowResults.features.attributes.LoadXX_1, description: 'Ground snow load (lb/ft2) for that elevation band.'}
+          - {name: snowResults.features.attributes.Details, description: '7-16 only: reference for "See Details" regions.'}
+      '7-22':
+        fields:
+          - {name: snowResults.riskCategoryXX, description: 'Ground snow load, lb/ft2, XX = Risk Category.'}
+          - {name: snowResults.mri20yr, description: '20-year MRI ground snow load, lb/ft2.'}
+          - {name: snowResults.winterWind, description: Winter wind parameter.}
+      '7-22 Alaska':
+        fields:
+          - {name: snowResults.attributes.ValueXX, description: 'Ground snow load for Risk Category XX (I-IV), lb/ft2. No 20-year MRI value.'}
+          - {name: snowResults.attributes.WinterWind, description: Winter wind parameter.}
+          - {name: snowResults.attributes.Notes, description: '"See Details" or "Case Study" qualifier; "Case Study" means the 0 value is N/A.'}
+  - name: Tornado
+    key_parameters: [lat, lon, standardsVersion, riskLevel]
+    data_source: ASCE/SEI 7-22 Figs. 32.5-1, 32.5-2, G.2-1 through G.2-4
+    fields:
+      - {name: isRiskLevelApplicable, description: 'True when Risk Category is I or II — no further data is returned.'}
+      - {name: 'resultsArray[].value', description: 'Tornado wind speed, mph.'}
+      - {name: 'resultsArray[].ae', description: 'Effective plan area, ft2; "PT" means 1 sq ft.'}
+      - {name: 'resultsArray[].mri', description: 'Mean recurrence interval, years.'}
+  - name: Tsunami
+    key_parameters: [lat, lon, standardsVersion]
+    data_source: ASCE Tsunami Design Geodatabase Version 2022-1.0 (https://asce7tsunami.online/)
+    fields:
+      - name: features
+        description: >-
+          GIS data about the tsunami design zone shape when the site is inside
+          the TDZ; empty when the site is outside it or standardsVersion is 7-10.
+  - name: Wind
+    key_parameters: [lat, lon, standardsVersion, riskLevel]
+    data_source: ASCE/SEI 7-10 Fig. 26.5-1B and CC-1 to CC-4; 7-16 and 7-22 Fig. 26.5-1C and CC.2-1 to CC.2-4
+    fields:
+      - name: mriResults
+        description: >-
+          3-second gust wind speeds at 33 ft above ground for Exposure C, mph,
+          for multiple MRIs. Default MRI by Risk Category — I: 300-year,
+          II: 700-year, III: 1,700-year, IV: 3,000-year.
+      - {name: isHurricaneWindDebrisZone, description: Site is in a hurricane-prone region per Section 26.2.}
+      - {name: isHurricaneWindDebris1MileZone, description: Internal flag — within 1 mile of the coast with wind speed above 130 mph.}
+      - {name: isSpecialWindZone, description: Site is in a special wind region per Fig. 26.5-1.}
+relationships:
+  - from: HazardResponse
+    to: RequestInfo
+    type: has_one
+    via: requestInfo
+  - from: HazardResponse
+    to: 'Flood | Ice | Rain | Seismic | Snow | Tornado | Tsunami | Wind'
+    type: has_one
+    via: the hazard key matching the operation called
+  - from: Site
+    to: HazardResponse
+    type: has_many
+    via: 'lat + lon (a site is the join key across all eight operations; there is no server-side site resource)'
+  - from: Tornado
+    to: TornadoResult
+    type: has_many
+    via: resultsArray
+identifiers:
+  primary_key: >-
+    None. The API exposes no resource identifiers — a coordinate pair plus a
+    standard edition IS the key. There are no id prefixes, no object ids, and no
+    resource to fetch by id.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

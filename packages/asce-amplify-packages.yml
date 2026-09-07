@@ -1,0 +1,44 @@
+generated: '2026-09-07'
+method: searched
+source: >-
+  npm registry search, PyPI, and the ASCE Hazard Tool API documentation page
+  (https://www.asce.org/publications-and-news/asce-hazard-tool/api)
+provider: ASCE Amplify
+providerId: asce-amplify
+package_count: 0
+official_package_count: 0
+packages: []
+registries_checked:
+  - registry: npm
+    endpoint: https://registry.npmjs.org/-/v1/search
+    queries: [asce, asce7, asce-hazard, ascehazard]
+    result: >-
+      No first-party ASCE package. Every hit belongs to an unrelated author
+      (asce-cli by AscelineHogge, @asce-dev/prettier-config, ghs-hazard-pictograms).
+  - registry: pypi
+    endpoint: https://pypi.org/pypi/<name>/json
+    queries: [asce7, ascehazard, asce-hazard-tool]
+    result: >-
+      asce7 exists (version 0.1, "Implementation of the ASCE 7 building code")
+      but names no ASCE author or homepage and is not published by the Society;
+      ascehazard and asce-hazard-tool return 404.
+  - registry: github
+    endpoint: https://api.github.com/users/asce
+    result: >-
+      github.com/asce is an unrelated individual account with 0 public repos.
+      No ASCE / api-evangelist-verified GitHub organization was found, so no
+      GitHubOrganization pointer is emitted.
+notes:
+  - >-
+    ASCE publishes no client SDK for the Hazard Loads API. The documentation
+    describes direct HTTPS GET calls with a `token` query parameter and JSON
+    responses; there is no SDK, CLI, or code-sample repository linked from the
+    developer documentation page.
+  - >-
+    No `SDKs` pointer is emitted, because none exists. An honest zero.
+  - >-
+    The GIS surface (gis.asce.org) is an Esri ArcGIS Server deployment; Esri's
+    own client libraries are third-party to ASCE and are not recorded here.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

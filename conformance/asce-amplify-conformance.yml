@@ -1,0 +1,148 @@
+generated: '2026-09-07'
+method: derived
+source: >-
+  openapi/asce-amplify-hazard-loads-openapi.yml,
+  wsdl/asce-amplify-arcgis-services-catalog.wsdl,
+  https://www.asce.org/publications-and-news/asce-hazard-tool/api
+provider: ASCE Amplify
+providerId: asce-amplify
+conformance:
+  - id: openapi-3.0
+    name: OpenAPI Specification 3.0.3
+    conforms: true
+    evidence: >-
+      openapi: 3.0.3 declared at the root of the spec ASCE serves at
+      https://api-hazard.asce.org/docs/assets/openapi.yml (HTTP 200,
+      text/yaml, fetched 2026-09-07).
+  - id: soap-wsdl-1.1
+    name: WSDL 1.1 / SOAP 1.1
+    conforms: true
+    evidence: >-
+      https://gis.asce.org/arcgis/services?wsdl returns HTTP 200 text/xml with a
+      WSDL 1.1 <definitions> root (7 catalog operations); the ASCE_Loading
+      MapServer WSDL carries 55 operations. Saved verbatim under wsdl/.
+  - id: esri-geoservices-rest
+    name: Esri GeoServices REST Specification (ArcGIS Server 11.5)
+    conforms: true
+    evidence: >-
+      https://gis.asce.org/arcgis/rest/info?f=json returns
+      {"currentVersion":11.5,"fullVersion":"11.5.0","soapUrl":"https://gis.asce.org/arcgis/services"}
+      and /arcgis/rest/services?f=json enumerates the ASCE, ASCE722 and
+      Utilities folders. Probed anonymously 2026-09-07.
+  - id: ogc-api-common
+    name: OGC API - Common
+    conforms: false
+    evidence: >-
+      GET https://gis.asce.org/conformance returned 404 with an HTML body; no
+      conformsTo[] carrying opengis.net class URIs is served on any ASCE host.
+  - id: ogc-wms
+    name: OGC Web Map Service (GetCapabilities)
+    conforms: false
+    evidence: >-
+      GET https://gis.asce.org/arcgis/services/ASCE/ASCE_Loading/MapServer/WMSServer?service=WMS&request=GetCapabilities
+      returned HTTP 400 "ArcGIS Server Error" — the OGC WMS interface is not
+      enabled on this ArcGIS deployment. The Esri REST and SOAP interfaces are.
+  - id: oauth2
+    name: OAuth 2.0
+    conforms: false
+    evidence: >-
+      The Hazard Loads API declares only an apiKey scheme (token, in query).
+      No oauth2 securityScheme and no OAuth documentation for the API.
+  - id: oidc
+    name: OpenID Connect
+    conforms: false
+    evidence: >-
+      Not on the API surface. The AMPLIFY web application authenticates humans
+      via the third-party SAMS Sigma IdP (https://idp.sams-sigma.com), which is
+      not an ASCE host and is not an API authentication path.
+  - id: rfc9457
+    name: RFC 9457 Problem Details for HTTP APIs
+    conforms: false
+    evidence: >-
+      Errors are a bare JSON envelope {"code":401,"message":"Token required"}
+      (observed 2026-09-07 on GET https://api-hazard.asce.org/v1/wind) with
+      application/json, not application/problem+json.
+  - id: pagination
+    name: Paginated collection responses
+    conforms: false
+    evidence: >-
+      No collection endpoints. All eight operations are point lookups keyed on
+      lat/lon; no page, cursor, limit or offset parameter exists in the spec.
+  - id: idempotency
+    name: Idempotency-Key replay protection
+    conforms: false
+    evidence: >-
+      Not applicable — the API is read-only (eight GET operations, no write
+      surface). See conventions/asce-amplify-conventions.yml.
+domain_standards:
+  - id: asce-sei-7
+    name: ASCE/SEI 7 — Minimum Design Loads and Associated Criteria for Buildings and Other Structures
+    conforms: true
+    evidence: >-
+      The contract itself declares the standard as a first-class, enumerated
+      request parameter. openapi/asce-amplify-hazard-loads-openapi.yml
+      paths./wind.get.parameters[standardsVersion].schema.enum = ['7-10','7-16','7-22'],
+      repeated on /ice, /snow, /tornado ('7-22' only) and /tsunami. The
+      siteClass enum on /seismic (A, B, C, D, E, B-estimated, D-default, BC, CD,
+      DE, Default) is the ASCE 7 site soil classification, and riskLevel 1-4 is
+      the ASCE 7 Risk Category.
+    spec_location: paths./seismic.get.parameters
+    standard_body: American Society of Civil Engineers / Structural Engineering Institute
+  - id: asce-sei-41
+    name: ASCE/SEI 41 — Seismic Evaluation and Retrofit of Existing Buildings
+    conforms: true
+    evidence: >-
+      openapi/asce-amplify-hazard-loads-openapi.yml
+      paths./seismic.get.parameters[standardsVersion].schema.enum includes
+      '41-17' and '41-23' alongside the ASCE 7 editions.
+    spec_location: paths./seismic.get.parameters
+    standard_body: American Society of Civil Engineers / Structural Engineering Institute
+  - id: usgs-seismic-design-web-services
+    name: USGS Seismic Design Web Services
+    conforms: true
+    evidence: >-
+      "Output values are taken from the USGS Seismic Design Web Services;
+      documentation may be found at https://earthquake.usgs.gov/ws/designmaps/" —
+      Hazard Tool API JSON field documentation (PDF), Seismic section.
+    standard_body: United States Geological Survey
+  - id: fema-nfhl
+    name: FEMA National Flood Hazard Layer
+    conforms: true
+    evidence: >-
+      "Data Source: FEMA National Flood Hazard Layer - Effective Flood Hazard
+      Layer for US, where modernized" and the response field names
+      flood.features.attributes.FLD_ZONE / STATIC_BFE / V_DATUM — Hazard Tool
+      API JSON field documentation (PDF), Flood section.
+    standard_body: Federal Emergency Management Agency
+  - id: noaa-atlas-14
+    name: NOAA Atlas 14 Precipitation Frequency Data Server
+    conforms: true
+    evidence: >-
+      "Data Source: NOAA National Weather Service, Precipitation Frequency Data
+      Server, Atlas 14" — Hazard Tool API JSON field documentation (PDF), Rain
+      section. rain.groups returns the Atlas 14 duration x recurrence-interval
+      table.
+    standard_body: National Oceanic and Atmospheric Administration
+  - id: navd88
+    name: NAVD 88 vertical datum
+    conforms: true
+    evidence: >-
+      flood.features.attributes.V_DATUM returns the vertical datum used for the
+      base flood elevation (e.g. NAVD 88) — Hazard Tool API JSON field
+      documentation (PDF); a NAVD88_vdatum ImageServer and NAVD88_Profile_Service
+      are published in the ASCE folder of https://gis.asce.org/arcgis/rest/services.
+certifications: []
+compliance_programs: []
+notes:
+  - >-
+    ASCE publishes no security certification or compliance program page (no SOC 2,
+    ISO 27001, PCI, HIPAA or FedRAMP claim was found), so no `Compliance` or
+    `TrustCenter` pointer is emitted.
+  - >-
+    ASCE is itself the standards body for ASCE/SEI 7 and ASCE/SEI 41. Recording
+    those as domain standards is a statement about the CONTRACT — the standard
+    edition is an enumerated parameter every caller must supply — not a claim of
+    third-party certification.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

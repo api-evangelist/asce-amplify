@@ -1,0 +1,80 @@
+generated: '2026-09-07'
+method: searched
+source: >-
+  https://www.asce.org/publications-and-news/asce-hazard-tool/api,
+  https://www.asce.org/publications-and-news/asce-hazard-tool/about,
+  https://status.asce.org/ (probed 2026-09-07)
+provider: ASCE Amplify
+providerId: asce-amplify
+versioning:
+  scheme: path
+  current: v1
+  evidence: >-
+    servers[0].url is https://api-hazard.asce.org/v1 in the OpenAPI ASCE serves.
+    info.version is 1.0.0.
+  policy_published: false
+  note: >-
+    ASCE publishes no API versioning policy. The version that actually moves for
+    a caller is the STANDARD edition, not the API: standardsVersion is a required
+    request parameter carrying 7-10, 7-16, 7-22, 41-17 and 41-23, so new editions
+    of ASCE/SEI 7 and 41 arrive as new enum values rather than a new API version.
+standards_editions:
+  supported: ['7-10', '7-16', '7-22', '41-17', '41-23']
+  per_hazard:
+    flood: [not applicable — FEMA NFHL, no edition parameter]
+    ice: ['7-10', '7-16', '7-22']
+    rain: [not applicable — NOAA Atlas 14, no edition parameter]
+    seismic: ['7-10', '7-16', '7-22', '41-17', '41-23']
+    snow: ['7-10', '7-16', '7-22']
+    tornado: ['7-22']
+    tsunami: ['7-10', '7-16', '7-22']
+    wind: ['7-10', '7-16', '7-22']
+  source: openapi/asce-amplify-hazard-loads-openapi.yml
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  deprecated_operations: []
+  evidence: >-
+    No `deprecated: true` flag appears on any operation in the OpenAPI, and no
+    deprecation, sunset or retirement policy page was found on asce.org. No
+    Deprecation pointer is emitted.
+status_page:
+  published: true
+  url: https://status.asce.org/
+  platform: Atlassian Statuspage
+  components: [ASCE, Website, Personify]
+  feeds:
+    - https://status.asce.org/history.atom
+    - https://status.asce.org/history.rss
+  subscriptions: [email, Slack]
+  evidence: >-
+    GET https://status.asce.org/ returned HTTP 200 on 2026-09-07 with the title
+    "American Society of Civil Engineers Status", an "All Systems Operational"
+    banner, three named components and an incident history.
+  covers_api: unknown
+  note: >-
+    The status page names ASCE, Website and Personify components. It does not
+    name the Hazard Loads API or gis.asce.org explicitly, so API-specific
+    coverage is not stated.
+sla:
+  published: false
+  evidence: >-
+    No service level agreement or uptime commitment is published for the Hazard
+    Tool API; commercial terms are handled through the quote process.
+support:
+  issue_reporting: https://www.asce.org/publications-and-news/asce-hazard-tool/report-an-issue
+  api_key_contact: amplify@asce.org
+  customer_service: https://www.asce.org/contact-us
+  quota_increase: https://www.asce.org/publications-and-news/asce-hazard-tool/request-a-quote
+changelog:
+  published: false
+  evidence: >-
+    No dated changelog or release-notes page exists for the Hazard Tool API. Data
+    source revisions are announced through the ASCE 7 standard itself and the
+    Civil Engineering Source newsroom, not an API changelog. No ChangeLog pointer
+    is emitted.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

@@ -1,0 +1,104 @@
+generated: '2026-09-07'
+method: searched
+source: >-
+  https://www.asce.org/publications-and-news/asce-hazard-tool/api (Error Codes
+  section) enriched with openapi/asce-amplify-hazard-loads-openapi.yml responses
+  and a live anonymous probe of https://api-hazard.asce.org/v1/wind
+provider: ASCE Amplify
+providerId: asce-amplify
+format: bare-json
+media_type: application/json
+rfc9457: false
+envelope:
+  shape: '{"code": <integer>, "message": "<string>"}'
+  fields:
+    - name: code
+      type: integer
+      description: Numeric status code, mirroring the HTTP status.
+    - name: message
+      type: string
+      description: Human-readable explanation of the failure.
+  evidence: >-
+    Observed 2026-09-07: GET https://api-hazard.asce.org/v1/wind with no token
+    returned HTTP 401, application/json, body {"code":401,"message":"Token required"}.
+problem_types:
+  - code: 200
+    http_status: 200
+    title: Successful operation
+    detail: The API request was successful.
+    source: https://www.asce.org/publications-and-news/asce-hazard-tool/api
+    remediation: null
+  - code: 400
+    http_status: 400
+    title: Invalid input
+    detail: >-
+      One or more query parameters is missing or out of range. Documented for
+      every operation in the OpenAPI as the '400 Invalid input' response. A
+      common cause is a site soil class that does not apply to the selected
+      standard version — the seismic field documentation states that using a
+      soil class that does not apply to the selected standardsVersion returns an
+      invalid input error.
+    source: openapi/asce-amplify-hazard-loads-openapi.yml
+    remediation: >-
+      Check lat/lon are numbers, that standardsVersion is one of the enumerated
+      editions for that hazard, and that siteClass is valid for the chosen
+      edition (7-10 and 41-17 accept A-F; 7-16 adds B-estimated and D-default;
+      7-22 and 41-23 add Default, BC, CD and DE).
+  - code: 401
+    http_status: 401
+    title: Token required
+    detail: >-
+      No `token` query parameter was supplied. Observed on a live anonymous call;
+      the documentation page describes a missing or invalid key as code 500, so
+      the deployed behavior is narrower than the published behavior.
+    source: 'probe: GET https://api-hazard.asce.org/v1/wind (2026-09-07)'
+    remediation: >-
+      Append token=<your API key> to the query string. Keys are issued per
+      company through the ASCE Hazard Tool Account Manager.
+  - code: 500
+    http_status: 500
+    title: Missing or invalid key
+    detail: The supplied API key is absent or is not recognized.
+    source: https://www.asce.org/publications-and-news/asce-hazard-tool/api
+    remediation: >-
+      Verify the key issued at sign-up; contact amplify@asce.org with API key
+      questions.
+  - code: 500
+    http_status: 500
+    title: Over query limit
+    detail: >-
+      The account has exhausted its monthly request allowance. The default
+      allowance is 1,000 requests per month, reported on every successful
+      response as requestInfo.currentMonthlyRequestNumber (e.g. "69/1000").
+    source: https://www.asce.org/publications-and-news/asce-hazard-tool/api
+    remediation: >-
+      Request a higher usage limit at
+      https://www.asce.org/publications-and-news/asce-hazard-tool/request-a-quote.
+non_error_conditions:
+  - condition: Tornado data requested for Risk Category I or II
+    behavior: >-
+      HTTP 200 with tornado.isRiskLevelApplicable set and no hazard values.
+      Tornado hazard data only applies to Risk Category III or IV.
+    source: Hazard Tool API JSON field documentation (PDF), Tornado section
+  - condition: Site outside the mapped tsunami design zone, or standardsVersion 7-10
+    behavior: HTTP 200 with an empty tsunami.features object.
+    source: Hazard Tool API JSON field documentation (PDF), Tsunami section
+  - condition: Base flood elevation not applicable at the site
+    behavior: >-
+      flood.features.attributes.STATIC_BFE returns the sentinel value -9999 and
+      V_DATUM returns an empty string.
+    source: Hazard Tool API JSON field documentation (PDF), Flood section
+  - condition: Snow load requires a site-specific case study
+    behavior: >-
+      Display_1 / DisplaySI read "Case Study" (7-10, 7-16), or the Alaska Notes
+      field reads "Case Study" and the load value is 0, which must be read as N/A.
+    source: Hazard Tool API JSON field documentation (PDF), Snow section
+notes:
+  - >-
+    The provider does not publish an RFC 9457 problem+json catalog. This file is
+    the published error-code reference plus the sentinel and not-applicable
+    conditions the field documentation defines, which are the conditions an agent
+    is most likely to misread as data.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

@@ -1,16 +1,21 @@
-generated: '2026-07-11'
+generated: '2026-09-07'
 method: probed
 source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
 hosts:
-- host: amplify.asce.org
-  https: true
-  tls_version: TLSv1.3
-  cert_expires: Sep 29 18:04:13 2026 GMT
-  hsts: null
 - host: www.asce.org
   https: true
   tls_version: TLSv1.3
-  cert_expires: Sep 26 02:22:23 2026 GMT
+  cert_expires: Nov 24 02:35:49 2026 GMT
+  hsts: false
+- host: amplify.asce.org
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Nov 27 19:01:20 2026 GMT
+  hsts: null
+- host: api-hazard.asce.org
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 22 23:59:59 2026 GMT
   hsts: false
 domains:
 - domain: asce.org
