@@ -51,76 +51,189 @@ description: >-
   ASCE Amplify also supports advocacy, connecting civil engineers with elected
   officials to advocate for infrastructure investment and sustainable practices.
 apis:
-  - aid: asce-amplify:hazard-tool-api
-    name: ASCE Hazard Tool API
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/asce-amplify.png
-    description: >-
-      The ASCE Hazard Tool API provides a simple interface to query locations
-      in the United States for environmental hazard data by geographic location.
-      It provides site-specific hazard values used in structural engineering
-      design including seismic ground motion parameters, wind speeds, snow loads,
-      ice loads, and flood data in accordance with ASCE 7 and related standards.
-      Access requires an ASCE membership or license.
-    humanURL: https://www.asce.org/publications-and-news/asce-hazard-tool/api
-    baseURL: https://api-hazard.asce.org/v1
-    tags:
-      - Civil Engineering
-      - Hazard Data
-      - Seismic
-      - Wind
-      - Snow
-      - Structural Engineering
-    properties:
-      - type: OpenAPI
-        url: openapi/asce-amplify-hazard-loads-openapi.yml
-        title: ASCE Hazard Loads API (OpenAPI 3.0.3, harvested verbatim)
-      - type: Overlay
-        url: overlays/asce-amplify-hazard-loads-overlay.yaml
-        title: API Evangelist enhancements (operationIds, descriptions, security notes)
-      - type: Documentation
-        url: https://www.asce.org/publications-and-news/asce-hazard-tool/api
-        title: ASCE Hazard Tool API documentation
-      - type: Documentation
-        url: >-
-          https://www.asce.org/-/media/asce-images-and-files/publications-and-news/hazard-tool/hazard-tool-api-documentation.pdf
-        title: Hazard Tool API JSON field documentation (PDF)
-      - type: APIReference
-        url: https://api-hazard.asce.org/docs
-        title: ASCE Hazard Loads API documentation (Swagger UI)
-      - type: Console
-        url: https://api-hazard.asce.org/docs
-        title: Interactive site for constructing and testing API calls
-  - aid: asce-amplify:arcgis-rest-services
-    name: ASCE GIS REST Services
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/asce-amplify.png
-    description: >-
-      The ASCE ArcGIS Server instance at gis.asce.org publishes the hazard map,
-      image and geoprocessing services that back the ASCE Hazard Tool — ASCE 7
-      wind, ice, snow, seismic, tsunami and tornado layers, NOAA precipitation
-      tiles, DEM mosaics and NAVD88 profile services. The Esri GeoServices REST
-      surface answers anonymously at /arcgis/rest/services with f=json, and the
-      same services are also published as SOAP endpoints described by WSDL. The
-      HTML Services Directory is disabled by the administrator (403); the JSON
-      representation is the readable contract.
-    humanURL: https://gis.asce.org/arcgis/rest/services?f=json
-    baseURL: https://gis.asce.org/arcgis/rest/services
-    tags:
-      - GIS
-      - Geospatial
-      - Hazard Data
-      - Civil Engineering
-      - ArcGIS
-    properties:
-      - type: WSDL
-        url: wsdl/asce-amplify-arcgis-services-catalog.wsdl
-        title: ArcGIS services catalog SOAP contract (harvested verbatim)
-      - type: WSDL
-        url: wsdl/asce-amplify-arcgis-asce-loading-mapserver.wsdl
-        title: ASCE_Loading MapServer SOAP contract (harvested verbatim)
-      - type: APIReference
-        url: https://gis.asce.org/arcgis/rest/services?f=json
-        title: ArcGIS REST services directory (JSON)
+- aid: asce-amplify:arcgis-rest-services
+  name: ASCE GIS REST Services
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/asce-amplify.png
+  description: >-
+    The ASCE ArcGIS Server instance at gis.asce.org publishes the hazard map, image and geoprocessing
+    services that back the ASCE Hazard Tool — ASCE 7 wind, ice, snow, seismic, tsunami and tornado layers,
+    NOAA precipitation tiles, DEM mosaics and NAVD88 profile services. The Esri GeoServices REST surface
+    answers anonymously at /arcgis/rest/services with f=json, and the same services are also published
+    as SOAP endpoints described by WSDL. The HTML Services Directory is disabled by the administrator
+    (403); the JSON representation is the readable contract.
+  humanURL: https://gis.asce.org/arcgis/rest/services?f=json
+  baseURL: https://gis.asce.org/arcgis/rest/services
+  tags:
+  - GIS
+  - Geospatial
+  - Hazard Data
+  - Civil Engineering
+  - ArcGIS
+  properties:
+  - type: WSDL
+    url: wsdl/asce-amplify-arcgis-services-catalog.wsdl
+    title: ArcGIS services catalog SOAP contract (harvested verbatim)
+  - type: WSDL
+    url: wsdl/asce-amplify-arcgis-asce-loading-mapserver.wsdl
+    title: ASCE_Loading MapServer SOAP contract (harvested verbatim)
+  - type: APIReference
+    url: https://gis.asce.org/arcgis/rest/services?f=json
+    title: ArcGIS REST services directory (JSON)
+- aid: asce-amplify:asce-amplify-flood-api
+  name: ASCE Amplify Flood API
+  description: The Flood API from ASCE Amplify — 1 operation(s) for flood.
+  humanURL: https://www.asce.org/publications-and-news/asce-hazard-tool/api
+  baseURL: https://api-hazard.asce.org/v1
+  tags:
+  - Flood
+  properties:
+  - type: OpenAPI
+    url: openapi/asce-amplify-flood-api-openapi.yml
+  - type: Documentation
+    url: https://www.asce.org/publications-and-news/asce-hazard-tool/api
+  - type: Documentation
+    url: >-
+      https://www.asce.org/-/media/asce-images-and-files/publications-and-news/hazard-tool/hazard-tool-api-documentation.pdf
+  - type: APIReference
+    url: https://api-hazard.asce.org/docs
+  - type: Console
+    url: https://api-hazard.asce.org/docs
+- aid: asce-amplify:asce-amplify-ice-api
+  name: ASCE Amplify Ice API
+  description: The Ice API from ASCE Amplify — 1 operation(s) for ice.
+  humanURL: https://www.asce.org/publications-and-news/asce-hazard-tool/api
+  baseURL: https://api-hazard.asce.org/v1
+  tags:
+  - Ice
+  properties:
+  - type: OpenAPI
+    url: openapi/asce-amplify-ice-api-openapi.yml
+  - type: Documentation
+    url: https://www.asce.org/publications-and-news/asce-hazard-tool/api
+  - type: Documentation
+    url: >-
+      https://www.asce.org/-/media/asce-images-and-files/publications-and-news/hazard-tool/hazard-tool-api-documentation.pdf
+  - type: APIReference
+    url: https://api-hazard.asce.org/docs
+  - type: Console
+    url: https://api-hazard.asce.org/docs
+- aid: asce-amplify:asce-amplify-rain-api
+  name: ASCE Amplify Rain API
+  description: The Rain API from ASCE Amplify — 1 operation(s) for rain.
+  humanURL: https://www.asce.org/publications-and-news/asce-hazard-tool/api
+  baseURL: https://api-hazard.asce.org/v1
+  tags:
+  - Rain
+  properties:
+  - type: OpenAPI
+    url: openapi/asce-amplify-rain-api-openapi.yml
+  - type: Documentation
+    url: https://www.asce.org/publications-and-news/asce-hazard-tool/api
+  - type: Documentation
+    url: >-
+      https://www.asce.org/-/media/asce-images-and-files/publications-and-news/hazard-tool/hazard-tool-api-documentation.pdf
+  - type: APIReference
+    url: https://api-hazard.asce.org/docs
+  - type: Console
+    url: https://api-hazard.asce.org/docs
+- aid: asce-amplify:asce-amplify-seismic-api
+  name: ASCE Amplify Seismic API
+  description: The Seismic API from ASCE Amplify — 1 operation(s) for seismic.
+  humanURL: https://www.asce.org/publications-and-news/asce-hazard-tool/api
+  baseURL: https://api-hazard.asce.org/v1
+  tags:
+  - Seismic
+  properties:
+  - type: OpenAPI
+    url: openapi/asce-amplify-seismic-api-openapi.yml
+  - type: Documentation
+    url: https://www.asce.org/publications-and-news/asce-hazard-tool/api
+  - type: Documentation
+    url: >-
+      https://www.asce.org/-/media/asce-images-and-files/publications-and-news/hazard-tool/hazard-tool-api-documentation.pdf
+  - type: APIReference
+    url: https://api-hazard.asce.org/docs
+  - type: Console
+    url: https://api-hazard.asce.org/docs
+- aid: asce-amplify:asce-amplify-snow-api
+  name: ASCE Amplify Snow API
+  description: The Snow API from ASCE Amplify — 1 operation(s) for snow.
+  humanURL: https://www.asce.org/publications-and-news/asce-hazard-tool/api
+  baseURL: https://api-hazard.asce.org/v1
+  tags:
+  - Snow
+  properties:
+  - type: OpenAPI
+    url: openapi/asce-amplify-snow-api-openapi.yml
+  - type: Documentation
+    url: https://www.asce.org/publications-and-news/asce-hazard-tool/api
+  - type: Documentation
+    url: >-
+      https://www.asce.org/-/media/asce-images-and-files/publications-and-news/hazard-tool/hazard-tool-api-documentation.pdf
+  - type: APIReference
+    url: https://api-hazard.asce.org/docs
+  - type: Console
+    url: https://api-hazard.asce.org/docs
+- aid: asce-amplify:asce-amplify-tornado-api
+  name: ASCE Amplify Tornado API
+  description: The Tornado API from ASCE Amplify — 1 operation(s) for tornado.
+  humanURL: https://www.asce.org/publications-and-news/asce-hazard-tool/api
+  baseURL: https://api-hazard.asce.org/v1
+  tags:
+  - Tornado
+  properties:
+  - type: OpenAPI
+    url: openapi/asce-amplify-tornado-api-openapi.yml
+  - type: Documentation
+    url: https://www.asce.org/publications-and-news/asce-hazard-tool/api
+  - type: Documentation
+    url: >-
+      https://www.asce.org/-/media/asce-images-and-files/publications-and-news/hazard-tool/hazard-tool-api-documentation.pdf
+  - type: APIReference
+    url: https://api-hazard.asce.org/docs
+  - type: Console
+    url: https://api-hazard.asce.org/docs
+- aid: asce-amplify:asce-amplify-tsunami-api
+  name: ASCE Amplify Tsunami API
+  description: The Tsunami API from ASCE Amplify — 1 operation(s) for tsunami.
+  humanURL: https://www.asce.org/publications-and-news/asce-hazard-tool/api
+  baseURL: https://api-hazard.asce.org/v1
+  tags:
+  - Tsunami
+  properties:
+  - type: OpenAPI
+    url: openapi/asce-amplify-tsunami-api-openapi.yml
+  - type: Documentation
+    url: https://www.asce.org/publications-and-news/asce-hazard-tool/api
+  - type: Documentation
+    url: >-
+      https://www.asce.org/-/media/asce-images-and-files/publications-and-news/hazard-tool/hazard-tool-api-documentation.pdf
+  - type: APIReference
+    url: https://api-hazard.asce.org/docs
+  - type: Console
+    url: https://api-hazard.asce.org/docs
+- aid: asce-amplify:asce-amplify-wind-api
+  name: ASCE Amplify Wind API
+  description: The Wind API from ASCE Amplify — 1 operation(s) for wind.
+  humanURL: https://www.asce.org/publications-and-news/asce-hazard-tool/api
+  baseURL: https://api-hazard.asce.org/v1
+  tags:
+  - Wind
+  properties:
+  - type: OpenAPI
+    url: openapi/asce-amplify-wind-api-openapi.yml
+  - type: Documentation
+    url: https://www.asce.org/publications-and-news/asce-hazard-tool/api
+  - type: Documentation
+    url: >-
+      https://www.asce.org/-/media/asce-images-and-files/publications-and-news/hazard-tool/hazard-tool-api-documentation.pdf
+  - type: APIReference
+    url: https://api-hazard.asce.org/docs
+  - type: Console
+    url: https://api-hazard.asce.org/docs
 common:
+  - type: Overlay
+    url: overlays/asce-amplify-hazard-loads-overlay.yaml
   - type: LLMsTxt
     url: llms/asce-amplify-llms.txt
   - type: AgentSkill
