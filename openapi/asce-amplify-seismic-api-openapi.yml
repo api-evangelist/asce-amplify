@@ -1,0 +1,87 @@
+openapi: 3.2.0
+info:
+  title: ASCE Hazard Loads API documentation Seismic API
+  description: This is the API documentation for the ASCE Hazard Loads API.
+  version: 1.0.0
+servers:
+- url: https://api-hazard.asce.org/v1
+- url: http://localhost:3000/v1
+security:
+- ApiKeyAuth: []
+tags:
+- name: Seismic
+paths:
+  /seismic:
+    get:
+      tags:
+      - Seismic
+      summary: Get seismic information
+      parameters:
+      - name: lat
+        in: query
+        description: Latitude of the location
+        required: true
+        schema:
+          type: number
+          default: 34.921206
+      - name: lon
+        in: query
+        description: Longitude of the location
+        required: true
+        schema:
+          type: number
+          default: -118.418998
+      - name: standardsVersion
+        in: query
+        description: Standards version
+        required: true
+        schema:
+          type: string
+          enum:
+          - 7-10
+          - 7-16
+          - 7-22
+          - 41-17
+          - 41-23
+      - name: riskLevel
+        in: query
+        description: Risk level
+        required: false
+        schema:
+          type: number
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+      - name: siteClass
+        in: query
+        description: Site class
+        required: true
+        schema:
+          type: string
+          enum:
+          - A
+          - B
+          - C
+          - D
+          - E
+          - B-estimated
+          - D-default
+          - BC
+          - CD
+          - DE
+          - Default
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input
+      operationId: getSeismic
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      name: token
+      in: query

@@ -1,0 +1,44 @@
+{
+  "provider": "asce-amplify",
+  "sources": [
+    "_original/asce-amplify-hazard-loads-openapi.yml"
+  ],
+  "outputs": [
+    "asce-amplify-flood-api-openapi.yml",
+    "asce-amplify-ice-api-openapi.yml",
+    "asce-amplify-rain-api-openapi.yml",
+    "asce-amplify-seismic-api-openapi.yml",
+    "asce-amplify-snow-api-openapi.yml",
+    "asce-amplify-tornado-api-openapi.yml",
+    "asce-amplify-tsunami-api-openapi.yml",
+    "asce-amplify-wind-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "1 archived document(s) dropped as subsets of other archived documents",
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "asce-amplify-hazard-loads-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "asce-amplify-hazard-loads-openapi.yml: declared missing tag: Flood",
+    "asce-amplify-hazard-loads-openapi.yml: declared missing tag: Ice",
+    "asce-amplify-hazard-loads-openapi.yml: declared missing tag: Rain",
+    "asce-amplify-hazard-loads-openapi.yml: declared missing tag: Seismic",
+    "asce-amplify-hazard-loads-openapi.yml: declared missing tag: Snow",
+    "asce-amplify-hazard-loads-openapi.yml: declared missing tag: Tornado",
+    "asce-amplify-hazard-loads-openapi.yml: declared missing tag: Tsunami",
+    "asce-amplify-hazard-loads-openapi.yml: declared missing tag: Wind",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "_original/asce-amplify-hazard-loads-openapi_2.yml: archived document superseded by a larger archived document",
+    "asce-amplify-flood-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "asce-amplify-ice-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "asce-amplify-rain-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "asce-amplify-seismic-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "asce-amplify-snow-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "asce-amplify-tornado-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "asce-amplify-tsunami-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "asce-amplify-wind-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}
