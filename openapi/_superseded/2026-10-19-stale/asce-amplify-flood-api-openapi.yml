@@ -1,0 +1,47 @@
+openapi: 3.2.0
+info:
+  title: ASCE Hazard Loads API documentation Flood API
+  description: This is the API documentation for the ASCE Hazard Loads API.
+  version: 1.0.0
+servers:
+- url: https://api-hazard.asce.org/v1
+- url: http://localhost:3000/v1
+security:
+- ApiKeyAuth: []
+tags:
+- name: Flood
+paths:
+  /flood:
+    get:
+      tags:
+      - Flood
+      summary: Get flood information
+      parameters:
+      - name: lat
+        in: query
+        description: Latitude of the location
+        required: true
+        explode: true
+        schema:
+          type: number
+          default: 34.921206
+      - name: lon
+        in: query
+        description: Longitude of the location
+        required: true
+        schema:
+          type: number
+          default: -118.418998
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input
+      operationId: getFlood
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      name: token
+      in: query

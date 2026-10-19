@@ -1,7 +1,61 @@
 openapi: 3.2.0
 info:
   title: ASCE Hazard Loads API documentation Flood API
-  description: This is the API documentation for the ASCE Hazard Loads API.
+  description: 'This is the API documentation for the ASCE Hazard Loads API.
+
+
+    ## Error responses
+
+
+    A failed request returns a JSON body carrying the HTTP status in `code`, the
+
+    reason in `message`, and — for failures raised after the request was
+
+    accepted — a `requestId` to quote when reporting the problem:
+
+
+    ```json
+
+    { "code": 400, "message": "\"riskLevel\" is required", "requestId": "48231" }
+
+    ```
+
+
+    Treat `requestId` as optional: a rejected token, an unknown path, and any
+
+    failure occurring before the request is accepted have no id to report.
+
+
+    Not every failure carries that body either — a `405` returns an empty body, a
+
+    rate-limit `429` returns plain text, and a failure in the hosting
+
+    infrastructure may return HTML. Branch on the status code, not on the shape
+
+    of the body.
+
+
+    | Code | Status | Meaning |
+
+    | ---- | ------ | ------- |
+
+    | 400 | `BAD_REQUEST` | The request is malformed: a required query parameter is missing, or a value is the wrong type or outside the set this endpoint accepts — a non-numeric `lat`/`lon`, or a `standardsVersion` the hazard does not support. `message` names every parameter at fault. Correct the request; resending it unchanged returns the same error. |
+
+    | 401 | `UNAUTHORIZED` | The `token` query parameter is missing, or the token is unrecognized, deactivated, or belongs to a deactivated account. Confirm the token is being sent and is still current. |
+
+    | 404 | `NOT_FOUND` | No endpoint exists at that path — check the spelling and the `/v1` prefix. This never means "no data": a request for a location a hazard does not cover still returns `200`. |
+
+    | 405 | `METHOD_NOT_ALLOWED` | The API is read-only. Endpoints accept `GET` and `HEAD` only; any other method is refused with an empty body and an `Allow` header. |
+
+    | 429 | `TOO_MANY_REQUESTS` | One of two limits was hit. **Monthly allowance** — the account has used its full request quota for the calendar month, which resets on the 1st. Only successful requests count against it, and every success reports `currentMonthlyRequestNumber` as a `used/allowed` count, so the remaining allowance is visible before it runs out. **Request rate** — too many requests arrived in a short window; wait the number of seconds given in the `Retry-After` header, then retry. |
+
+    | 500 | `INTERNAL_SERVER_ERROR` | The API failed unexpectedly. The request itself was accepted, so resending it is unlikely to help — quote `requestId` when reporting the problem. |
+
+    | 502 | `BAD_GATEWAY` | The API, or a data service it depends on, could not be reached. Usually transient — retry with backoff. |
+
+    | 503 | `SERVICE_UNAVAILABLE` | A data service the API depends on returned an error, so the requested values could not be produced. Usually transient — retry with backoff. |
+
+    | 504 | `GATEWAY_TIMEOUT` | The API, or a data service it depends on, did not respond in time. Retry with backoff; if a specific location fails repeatedly, quote `requestId` when reporting it. |'
   version: 1.0.0
 servers:
 - url: https://api-hazard.asce.org/v1

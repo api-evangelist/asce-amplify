@@ -1,0 +1,441 @@
+openapi: 3.0.3
+info:
+  title: ASCE Hazard Loads API documentation
+  description: |
+    This is the API documentation for the ASCE Hazard Loads API.
+
+    ## Error responses
+
+    A failed request returns a JSON body carrying the HTTP status in `code`, the
+    reason in `message`, and — for failures raised after the request was
+    accepted — a `requestId` to quote when reporting the problem:
+
+    ```json
+    { "code": 400, "message": "\"riskLevel\" is required", "requestId": "48231" }
+    ```
+
+    Treat `requestId` as optional: a rejected token, an unknown path, and any
+    failure occurring before the request is accepted have no id to report.
+
+    Not every failure carries that body either — a `405` returns an empty body, a
+    rate-limit `429` returns plain text, and a failure in the hosting
+    infrastructure may return HTML. Branch on the status code, not on the shape
+    of the body.
+
+    | Code | Status | Meaning |
+    | ---- | ------ | ------- |
+    | 400 | `BAD_REQUEST` | The request is malformed: a required query parameter is missing, or a value is the wrong type or outside the set this endpoint accepts — a non-numeric `lat`/`lon`, or a `standardsVersion` the hazard does not support. `message` names every parameter at fault. Correct the request; resending it unchanged returns the same error. |
+    | 401 | `UNAUTHORIZED` | The `token` query parameter is missing, or the token is unrecognized, deactivated, or belongs to a deactivated account. Confirm the token is being sent and is still current. |
+    | 404 | `NOT_FOUND` | No endpoint exists at that path — check the spelling and the `/v1` prefix. This never means "no data": a request for a location a hazard does not cover still returns `200`. |
+    | 405 | `METHOD_NOT_ALLOWED` | The API is read-only. Endpoints accept `GET` and `HEAD` only; any other method is refused with an empty body and an `Allow` header. |
+    | 429 | `TOO_MANY_REQUESTS` | One of two limits was hit. **Monthly allowance** — the account has used its full request quota for the calendar month, which resets on the 1st. Only successful requests count against it, and every success reports `currentMonthlyRequestNumber` as a `used/allowed` count, so the remaining allowance is visible before it runs out. **Request rate** — too many requests arrived in a short window; wait the number of seconds given in the `Retry-After` header, then retry. |
+    | 500 | `INTERNAL_SERVER_ERROR` | The API failed unexpectedly. The request itself was accepted, so resending it is unlikely to help — quote `requestId` when reporting the problem. |
+    | 502 | `BAD_GATEWAY` | The API, or a data service it depends on, could not be reached. Usually transient — retry with backoff. |
+    | 503 | `SERVICE_UNAVAILABLE` | A data service the API depends on returned an error, so the requested values could not be produced. Usually transient — retry with backoff. |
+    | 504 | `GATEWAY_TIMEOUT` | The API, or a data service it depends on, did not respond in time. Retry with backoff; if a specific location fails repeatedly, quote `requestId` when reporting it. |
+  version: 1.0.0
+servers:
+  - url: https://api-hazard.asce.org/v1
+  - url: http://localhost:3000/v1
+paths:
+  /flood:
+    get:
+      tags:
+        - Flood
+      summary: Get flood information
+      parameters:
+        - name: lat
+          in: query
+          description: Latitude of the location
+          required: true
+          explode: true
+          schema:
+            type: number
+            default: 34.921206
+        - name: lon
+          in: query
+          description: Longitude of the location
+          required: true
+          schema:
+            type: number
+            default: -118.418998
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input
+  /ice:
+    get:
+      tags:
+        - Ice
+      summary: Get ice information
+      parameters:
+        - name: lat
+          in: query
+          description: Latitude of the location
+          required: true
+          explode: true
+          schema:
+            type: number
+            default: 34.921206
+        - name: lon
+          in: query
+          description: Longitude of the location
+          required: true
+          schema:
+            type: number
+            default: -118.418998
+        - name: standardsVersion
+          in: query
+          description: Standards version
+          required: true
+          schema:
+            type: string
+            enum:
+              - 7-10
+              - 7-16
+              - 7-22
+        - name: riskLevel
+          in: query
+          description: Risk level
+          required: false
+          schema:
+            type: number
+            enum:
+              - 1
+              - 2
+              - 3
+              - 4
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input
+  /rain:
+    get:
+      tags:
+        - 'Rain'
+      summary: Get rain information
+      parameters:
+        - name: lat
+          in: query
+          description: Latitude of the location
+          required: true
+          schema:
+            type: number
+            default: 34.921206
+        - name: lon
+          in: query
+          description: Longitude of the location
+          required: true
+          schema:
+            type: number
+            default: -118.418998
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input
+  /seismic:
+    get:
+      tags:
+        - 'Seismic'
+      summary: Get seismic information
+      parameters:
+        - name: lat
+          in: query
+          description: Latitude of the location
+          required: true
+          schema:
+            type: number
+            default: 34.921206
+        - name: lon
+          in: query
+          description: Longitude of the location
+          required: true
+          schema:
+            type: number
+            default: -118.418998
+        - name: standardsVersion
+          in: query
+          description: Standards version
+          required: true
+          schema:
+            type: string
+            enum:
+              - 7-10
+              - 7-16
+              - 7-22
+              - 41-17
+              - 41-23
+        - name: riskLevel
+          in: query
+          description: Risk level
+          required: false
+          schema:
+            type: number
+            enum:
+              - 1
+              - 2
+              - 3
+              - 4
+        - name: siteClass
+          in: query
+          description: Site class
+          required: true
+          schema:
+            type: string
+            enum:
+              - A
+              - B
+              - C
+              - D
+              - E
+              - B-estimated
+              - D-default
+              - BC
+              - CD
+              - DE
+              - Default
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input
+  /snow:
+    get:
+      tags:
+        - 'Snow'
+      summary: Get snow information
+      parameters:
+        - name: lat
+          in: query
+          description: Latitude of the location
+          required: true
+          schema:
+            type: number
+            default: 34.921206
+        - name: lon
+          in: query
+          description: Longitude of the location
+          required: true
+          schema:
+            type: number
+            default: -118.418998
+        - name: standardsVersion
+          in: query
+          description: Standards version
+          required: true
+          schema:
+            type: string
+            enum:
+              - 7-10
+              - 7-16
+              - 7-22
+        - name: riskLevel
+          in: query
+          description: Risk level
+          required: true
+          schema:
+            type: number
+            enum:
+              - 1
+              - 2
+              - 3
+              - 4
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input
+  /tornado:
+    get:
+      tags:
+        - 'Tornado'
+      summary: Get tornado information
+      parameters:
+        - name: lat
+          in: query
+          description: Latitude of the location
+          required: true
+          schema:
+            type: number
+            default: 34.921206
+        - name: lon
+          in: query
+          description: Longitude of the location
+          required: true
+          schema:
+            type: number
+            default: -118.418998
+        - name: standardsVersion
+          in: query
+          description: Standards version
+          required: true
+          schema:
+            type: string
+            enum:
+              - '7-22'
+        - name: riskLevel
+          in: query
+          description: Risk level
+          required: true
+          schema:
+            type: number
+            enum:
+              - 1
+              - 2
+              - 3
+              - 4
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input
+  /tsunami:
+    get:
+      tags:
+        - 'Tsunami'
+      summary: Get tsunami information
+      parameters:
+        - name: lat
+          in: query
+          description: Latitude of the location
+          required: true
+          schema:
+            type: number
+            default: 34.921206
+        - name: lon
+          in: query
+          description: Longitude of the location
+          required: true
+          schema:
+            type: number
+            default: -118.418998
+        - name: standardsVersion
+          in: query
+          description: Standards version
+          required: true
+          schema:
+            type: string
+            enum:
+              - 7-10
+              - 7-16
+              - 7-22
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input
+  /wind:
+    get:
+      tags:
+        - 'Wind'
+      summary: Get wind information
+      parameters:
+        - name: lat
+          in: query
+          description: Latitude of the location
+          required: true
+          schema:
+            type: number
+            default: 34.921206
+        - name: lon
+          in: query
+          description: Longitude of the location
+          required: true
+          schema:
+            type: number
+            default: -118.418998
+        - name: standardsVersion
+          in: query
+          description: Standards version
+          required: true
+          schema:
+            type: string
+            enum:
+              - 7-10
+              - 7-16
+              - 7-22
+        - name: riskLevel
+          in: query
+          description: Risk level
+          required: true
+          schema:
+            type: number
+            enum:
+              - 1
+              - 2
+              - 3
+              - 4
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input
+  /health-check:
+    get:
+      tags:
+        - 'Health-check'
+      summary: Check that the API and its database are reachable
+      description: |
+        Reports whether the API is up and can reach its database. Intended for
+        uptime monitoring and load-balancer probes rather than for hazard
+        clients.
+
+        This is the one endpoint that needs no `token`, and it is not counted
+        against the account's monthly allowance.
+
+        Its failure body is its own shape — the `code`/`message`/`requestId`
+        body described above does not apply here.
+      security: []
+      responses:
+        '200':
+          description: The API is up and the database responded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum:
+                      - ok
+                  db:
+                    type: string
+                    enum:
+                      - connected
+              example:
+                status: ok
+                db: connected
+        '500':
+          description: |
+            The API is up but the database did not respond. `error` carries the
+            underlying database error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum:
+                      - error
+                  db:
+                    type: string
+                    enum:
+                      - disconnected
+                  error:
+                    type: string
+              example:
+                status: error
+                db: disconnected
+                error: "Can't reach database server"
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      name: token
+      in: query
+security:
+  - ApiKeyAuth: []

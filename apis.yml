@@ -231,6 +231,16 @@ apis:
     url: https://api-hazard.asce.org/docs
   - type: Console
     url: https://api-hazard.asce.org/docs
+- aid: asce-amplify:asce-amplify-health-check-api
+  name: ASCE Amplify Health Check API
+  description: The Health-check API from ASCE Amplify — 1 operation(s) for health-check.
+  humanURL: https://gis.asce.org/arcgis/rest/services?f=json
+  baseURL: https://gis.asce.org/arcgis/rest/services
+  tags:
+  - Health-check
+  properties:
+  - type: OpenAPI
+    url: openapi/asce-amplify-health-check-api-openapi.yml
 common:
   - url: https://www.asce.org/publications-and-news/newsroom
     type: Blog

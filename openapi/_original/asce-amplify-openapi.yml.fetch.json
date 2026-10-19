@@ -1,0 +1,12 @@
+{
+ "url": "https://api-hazard.asce.org/docs/assets/openapi.yml",
+ "final": "https://api-hazard.asce.org/docs/assets/openapi.yml",
+ "status": 200,
+ "content_type": "text/yaml; charset=UTF-8",
+ "bytes": 13161,
+ "sha256": "e7aff5826bac7752f628a4273c3dd7133eba9b0acfd3a9f0680c3ad5bd3694f4",
+ "fetched_at": "2026-10-19",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "re-archived: the provider's current document replaced a stale archive (roadmap#793); the old files are in openapi/_superseded/2026-10-19-stale"
+}
