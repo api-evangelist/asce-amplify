@@ -237,6 +237,8 @@ apis:
   humanURL: https://gis.asce.org/arcgis/rest/services?f=json
   baseURL: https://gis.asce.org/arcgis/rest/services
   tags:
+  - Health Check
+  tags_raw:
   - Health-check
   properties:
   - type: OpenAPI
