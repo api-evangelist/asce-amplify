@@ -1,4 +1,4 @@
-# ASCE Amplify (asce-amplify)
+# ASCE Amplify
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,67 +66,131 @@
 
 ASCE Amplify is a platform created by the American Society of Civil Engineers (ASCE) that provides civil engineering data and advocacy tools. The platform includes the ASCE Hazard Tool API, which provides a simple interface to query locations in the United States for environmental hazard data by geographic location. The Hazard Tool API covers seismic, wind, snow, ice, flood, and other environmental hazard loads used in structural design per ASCE standards. ASCE Amplify also supports advocacy, connecting civil engineers with elected officials to advocate for infrastructure investment and sustainable practices.
 
-**URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/asce-amplify/refs/heads/main/apis.yml)
+**Areas:** Civil Engineering · Hazard Data · Engineering Standards · Infrastructure · Structural Engineering · Geospatial · Seismic · Building Codes · Standards Body
 
-**Run:** [Capabilities Using Naftiko](https://github.com/naftiko/fleet?utm_source=api-evangelist&utm_medium=readme&utm_campaign=company-api-evangelist&utm_content=repo)
+## ASCE Amplify on APIs.io
 
-## Tags:
+Everything profiled for ASCE Amplify is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/asce-amplify/](https://apis.io/providers/asce-amplify/)** — or go straight to one of the APIs or properties below.
 
- - Civil Engineering, Hazard Data, Engineering Standards, Infrastructure
+### APIs (9)
 
-## Timestamps
+- [ASCE GIS REST Services](https://apis.io/apis/asce-amplify/arcgis-rest-services/) — The ASCE ArcGIS Server instance at gis.asce.org publishes the hazard map, image and geoprocessing services that back the ASCE Hazard Tool — ASCE 7 wind,…
+- [ASCE Amplify Flood API](https://apis.io/apis/asce-amplify/asce-amplify-flood-api/) — The Flood API from ASCE Amplify — 1 operation(s) for flood.
+- [ASCE Amplify Ice API](https://apis.io/apis/asce-amplify/asce-amplify-ice-api/) — The Ice API from ASCE Amplify — 1 operation(s) for ice.
+- [ASCE Amplify Rain API](https://apis.io/apis/asce-amplify/asce-amplify-rain-api/) — The Rain API from ASCE Amplify — 1 operation(s) for rain.
+- [ASCE Amplify Seismic API](https://apis.io/apis/asce-amplify/asce-amplify-seismic-api/) — The Seismic API from ASCE Amplify — 1 operation(s) for seismic.
+- [ASCE Amplify Snow API](https://apis.io/apis/asce-amplify/asce-amplify-snow-api/) — The Snow API from ASCE Amplify — 1 operation(s) for snow.
+- [ASCE Amplify Tornado API](https://apis.io/apis/asce-amplify/asce-amplify-tornado-api/) — The Tornado API from ASCE Amplify — 1 operation(s) for tornado.
+- [ASCE Amplify Tsunami API](https://apis.io/apis/asce-amplify/asce-amplify-tsunami-api/) — The Tsunami API from ASCE Amplify — 1 operation(s) for tsunami.
+- [ASCE Amplify Wind API](https://apis.io/apis/asce-amplify/asce-amplify-wind-api/) — The Wind API from ASCE Amplify — 1 operation(s) for wind.
 
-- **Created:** 2025-02-17
-- **Modified:** 2026-04-19
+### Published properties
 
-## APIs
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-### ASCE Hazard Tool API
-The ASCE Hazard Tool API provides a simple interface to query locations in the United States for environmental hazard data by geographic location. It provides site-specific hazard values used in structural engineering design including seismic ground motion parameters, wind speeds, snow loads, ice loads, and flood data in accordance with ASCE 7 and related standards. Access requires an ASCE membership or license.
+#### MCP servers (1)
 
-**Human URL:** [https://amplify.asce.org/api](https://amplify.asce.org/api)
+Model Context Protocol servers that expose the API to agents.
 
-#### Tags:
+- [asce-hazard-loads](https://apis.io/servers/asce-amplify/asce-hazard-loads/)
 
- - Civil Engineering, Hazard Data, Seismic, Wind, Snow, Structural Engineering
+#### Overlays (1)
 
-#### Properties
+OpenAPI overlays, including conversational phrasing for each operation.
 
-- [Documentation](https://amplify.asce.org/api)
-- [Authentication](https://amplify.asce.org/api)
+- [Asce Amplify Hazard Loads Overlay](https://apis.io/overlays/asce-amplify/asce-amplify-hazard-loads-overlay/)
 
-## Common Properties
+#### Security (2)
 
-- [ASCE Amplify Platform](https://amplify.asce.org/)
-- [ASCE Website](https://www.asce.org/)
+Authentication, trust centre, and vulnerability disclosure.
 
-## Features
+- [Asce Amplify Authentication](https://apis.io/security/asce-amplify/asce-amplify-authentication/)
+- [Asce Amplify Domain Security](https://apis.io/security/asce-amplify/asce-amplify-domain-security/)
 
-| Name | Description |
-|------|-------------|
-| Geographic Hazard Lookup | Query any US location by latitude and longitude or address to retrieve site-specific environmental hazard values for structural design, including ASCE 7 seismic, wind, snow, and ice parameters. |
-| ASCE 7 Seismic Parameters | Retrieve seismic design parameters including Ss, S1, SMS, SM1, SDS, SD1, and spectral acceleration values per ASCE 7 for any US location. |
-| Wind Speed Data | Access design wind speed values for various risk categories and exposure categories per ASCE 7 for structural wind load calculations. |
-| Snow and Ice Load Data | Retrieve ground snow load values and ice storm data for design of roof structures and overhead transmission lines per ASCE 7. |
-| Civil Engineer Advocacy | Tools for ASCE members to contact elected officials and advocate for infrastructure funding, engineering standards, and professional issues. |
+#### Plans and pricing (1)
 
-## Use Cases
+Published plans, tiers and prices.
 
-| Name | Description |
-|------|-------------|
-| Structural Design | Structural engineers use the ASCE Hazard Tool API to obtain site-specific hazard parameters for building and infrastructure design in compliance with ASCE 7 and building codes. |
-| Site Assessment | Civil engineers perform preliminary site assessments for new construction projects by querying multiple locations for hazard comparisons. |
-| Software Integration | Structural engineering software vendors integrate the ASCE Hazard Tool API to automatically populate design parameters based on project location. |
+- [Asce Amplify Plans Pricing](https://apis.io/plans/asce-amplify/asce-amplify-plans-pricing/)
 
-## Integrations
+#### Rate limits (1)
 
-| Name | Description |
-|------|-------------|
-| ASCE 7 Standards | API values directly correspond to ASCE 7 Minimum Design Loads for Buildings and Other Structures, the primary reference standard for US structural engineering. |
-| IBC Building Codes | Hazard parameters from the API align with International Building Code requirements that reference ASCE 7 for environmental load design values. |
+Published request limits.
 
-## Maintainers
+- [Asce Amplify Rate Limits](https://apis.io/rate-limits/asce-amplify/asce-amplify-rate-limits/)
 
-**FN:** Kin Lane
+#### FinOps (1)
 
-**Email:** kin@apievangelist.com
+What the API costs to run, by operation.
+
+- [Asce Amplify Finops](https://apis.io/finops/asce-amplify/asce-amplify-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.asce.org/)
+- [Documentation](https://www.asce.org/publications-and-news/asce-hazard-tool/api)
+- [Getting started](https://www.asce.org/publications-and-news/asce-hazard-tool/about)
+- [API reference](https://api-hazard.asce.org/docs)
+- [Pricing](https://www.asce.org/publications-and-news/asce-hazard-tool/request-a-quote)
+- [Support](https://www.asce.org/publications-and-news/asce-hazard-tool/report-an-issue)
+- [Blog](https://www.asce.org/publications-and-news/newsroom)
+- [Terms of service](https://www.asce.org/publications-and-news/asce-hazard-tool/terms)
+- [Privacy policy](https://www.asce.org/privacy-policy)
+- [Status](https://status.asce.org/)
+
+## API Evangelist rating
+
+**Kin Score 43.8** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 40.8 |
+| Contract governance | 4.5 |
+| Operational transparency | 36.8 |
+| Developer ergonomics | 66.1 |
+| Access clarity | 31.6 |
+
+**Agent readiness 28.1** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | na |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | na |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | na |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | na |
+
+**Regulatory alignment 24.5** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/asce-amplify/](https://apis.io/providers/asce-amplify/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for ASCE Amplify: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/asce-amplify/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
